@@ -1,26 +1,16 @@
-# 🎲 APP-NAME
+# ⚙️ TOASTER.MESSAGE-HANDLING-SERVICE
 
-<div align="center">
-  <img src="https://i.pinimg.com/originals/08/7b/fb/087bfb3a72c8f5af8a14c7b20352dafd.gif" width="800">
-</div>
+![main_img](https://github.com/STALCRAFT-FUNCKA/toaster.message-handling-service/assets/76991612/8bb6b3bf-8385-4d4b-80cc-e104d5283a9c)
 
-## ❗ Оглавление\Contents ##
+Вся документирующая информация продублированна внутри кода на английском языке.<br>
+All documenting information is duplicated within the code in English.<br>
 
-- [🎲 APP-NAME](#-app-name)
-  - [❗ Оглавление\Contents](#-оглавлениеcontents)
-  - [📄 Глава 1\Chapter 1](#-глава-1chapter-1)
-  - [📄 Глава 2\Chapter 2](#-глава-2chapter-2)
-  - [📄 Глава 3\Chapter 3](#-глава-3chapter-3)
-  - [📄 Глава 4\Chapter 4](#-глава-4chapter-4)
+## 📄 Информация
 
-## 📄 Глава 1\Chapter 1 ##
-Просто какой-то текст\Samplem text.
 
-## 📄 Глава 2\Chapter 2 ##
-Просто какой-то текст\Samplem text.
 
-## 📄 Глава 3\Chapter 3 ##
-Просто какой-то текст\Samplem text.
+### Входные данные:
 
-## 📄 Глава 4\Chapter 4 ##
-Просто какой-то текст\Samplem text.
+
+
+### Дополнительно
