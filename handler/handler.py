@@ -1,3 +1,4 @@
+import requests
 from vk_api import VkApiError
 from logger import logger
 from db import db
@@ -92,6 +93,7 @@ class PunishmentHandler(ABCHandler):
             peer_id=event.get("peer_id"),
             random_id=0,
             message=text,
+            attachment=await self._get_warn_banner_url(warns),
         )
 
     async def _get_zone_interval(self, event, zone_name) -> int:
@@ -122,19 +124,22 @@ class PunishmentHandler(ABCHandler):
         """
         db.execute.raw(schema="toaster", query=query)
 
+    async def _get_warn_banner_url(self, event, warns):
+        upload_url = self.api.photos.getMessagesUploadServer(
+            peer_id=event.get("peer_id"),
+        ).get("upload_url")
+
+        photo_data = requests.post(
+            upload_url,
+            files={"file": open(f"config\images\warn_banner_{warns}_10.png", "rb")},
+        ).json()
+
+        save_photo = self.api.photos.saveMessagesPhoto(
+            photo=photo_data.get("photo"),
+            server=photo_data.get("server"),
+            hash=photo_data.get("hash"),
+        )[0]
+        return f"photo{save_photo.get('owner_id')}_{save_photo.get('photo_id')}"
+
 
 punishment_executer = PunishmentHandler()
-
-"""
-CREATE TABLE IF NOT EXISTS warn_points
-(
-    conv_id BIGINT,
-    user_id BIGINT,
-
-    points TINYINT(10),
-    expire DATETIME,
-
-    PRIMARY KEY (conv_id, user_id),
-    FOREIGN KEY (conv_id) REFERENCES toaster.conversations(conv_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-"""
