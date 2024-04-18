@@ -131,7 +131,7 @@ class PunishmentHandler(ABCHandler):
 
         photo_data = requests.post(
             url=upload_url,
-            files={"file": open(f"config\images\warn_banner_{warns}_10.png", "rb")},
+            files={"file": open(f"..\config\images\warn_banner_{warns}_10.png", "rb")},
         ).json()
 
         save_photo = self.api.photos.saveMessagesPhoto(
