@@ -120,7 +120,7 @@ class PunishmentHandler(ABCHandler):
             )
         ON DUPLICATE KEY UPDATE
             points = '{points}',
-            column2 = NOW() + INTERVAL {interval} DAY;
+            expire = NOW() + INTERVAL {interval} DAY;
         """
         db.execute.raw(schema="toaster", query=query)
 
