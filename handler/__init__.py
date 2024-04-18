@@ -1,6 +1,6 @@
 """_summary_"""
 
-from .handler import message_handler
+from .handler import punishment_executer
 
 
-__all__ = ("message_handler",)
+__all__ = ("punishment_executer",)
