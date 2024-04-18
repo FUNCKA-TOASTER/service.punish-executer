@@ -149,7 +149,7 @@ class PunishmentHandler(ABCHandler):
             "photo{"
             + str(save_photo.get("owner_id"))
             + "}_{"
-            + str(save_photo.get("photo_id"))
+            + str(save_photo.get("id"))
             + "}"
         )
 
