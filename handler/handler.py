@@ -141,7 +141,13 @@ class PunishmentHandler(ABCHandler):
             server=photo_data.get("server"),
             hash=photo_data.get("hash"),
         )[0]
-        return f"photo{save_photo.get('owner_id')}_{save_photo.get('photo_id')}"
+        return (
+            "photo{"
+            + str(save_photo.get("owner_id"))
+            + "}_{"
+            + str(save_photo.get("photo_id"))
+            + "}"
+        )
 
 
 punishment_executer = PunishmentHandler()
