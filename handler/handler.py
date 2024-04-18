@@ -89,11 +89,13 @@ class PunishmentHandler(ABCHandler):
         return 0
 
     async def _send_direct_alert(self, event, text, warns) -> None:
+        photo = await self._get_warn_banner_attachment(event, warns)
+        await logger.debug(photo)
         self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
             message=text,
-            attachment=await self._get_warn_banner_attachment(event, warns),
+            attachment=photo,
         )
 
     async def _get_zone_interval(self, event, zone_name) -> int:
@@ -135,12 +137,13 @@ class PunishmentHandler(ABCHandler):
                 )
             },
         ).json()
-
+        await logger.debug(photo_data)
         save_photo = self.api.photos.saveMessagesPhoto(
             photo=photo_data.get("photo"),
             server=photo_data.get("server"),
             hash=photo_data.get("hash"),
         )[0]
+        await logger.debug(save_photo)
         return (
             "photo{"
             + str(save_photo.get("owner_id"))
