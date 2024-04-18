@@ -12,7 +12,7 @@ class PunishmentHandler(ABCHandler):
 
         if setting:
             log_text += f'By setting "{setting}".'
-            warns = await self._get_warns(setting, event.get("peer_id"))
+            warns = await self._get_warns(event)
 
         else:
             warns = event.get("warn_count")
