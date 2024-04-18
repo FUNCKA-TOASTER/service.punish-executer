@@ -7,6 +7,8 @@ from .abc import ABCHandler
 
 class PunishmentHandler(ABCHandler):
     async def _handle(self, event: dict, kwargs) -> bool:
+        await self._delete_msg(event)
+
         log_text = f"{event.get('author_name')}|id{event.get('author_id')}, punished {event.get('target_name')}|id{event.get('target_id')}."
         setting = event.get("setting")
 
@@ -20,7 +22,6 @@ class PunishmentHandler(ABCHandler):
         if warns == 0:
             log_text += "Punishment: message deleted."
             await logger.info(log_text)
-            await self._delete_msg(event)
             return True
 
         current_warns = await self._get_current_warns(event)
