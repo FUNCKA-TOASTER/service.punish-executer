@@ -137,7 +137,7 @@ class PunishmentHandler(ABCHandler):
                 )
             },
         ).json()
-
+        await logger.debug(str(photo_data))
         save_photo = self.api.photos.saveMessagesPhoto(
             photo=photo_data.get("photo"),
             server=photo_data.get("server"),
