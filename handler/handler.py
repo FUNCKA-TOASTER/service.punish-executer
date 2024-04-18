@@ -31,13 +31,13 @@ class PunishmentHandler(ABCHandler):
 
         days_interval = 0
         if sum_warns <= 3:
-            days_interval = await self._get_zone_delay(event, "green_zone")
+            days_interval = await self._get_zone_interval(event, "green_zone")
 
         if sum_warns <= 6:
-            days_interval = await self._get_zone_delay(event, "yellow_zone")
+            days_interval = await self._get_zone_interval(event, "yellow_zone")
 
         if sum_warns <= 9:
-            days_interval = await self._get_zone_delay(event, "red_zone")
+            days_interval = await self._get_zone_interval(event, "red_zone")
 
         await self._update_warn_points(event, days_interval, sum_warns)
         if sum_warns == 10:
