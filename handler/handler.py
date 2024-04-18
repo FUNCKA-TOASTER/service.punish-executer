@@ -125,9 +125,7 @@ class PunishmentHandler(ABCHandler):
         db.execute.raw(schema="toaster", query=query)
 
     async def _get_warn_banner_attachment(self, event, warns) -> str:
-        upload_url = self.api.photos.getMessagesUploadServer(
-            peer_id=event.get("peer_id"),
-        ).get("upload_url")
+        upload_url = self.api.photos.getMessagesUploadServer().get("upload_url")
 
         photo_data = requests.post(
             url=upload_url,
@@ -137,7 +135,7 @@ class PunishmentHandler(ABCHandler):
                 )
             },
         ).json()
-        await logger.debug(str(photo_data))
+
         save_photo = self.api.photos.saveMessagesPhoto(
             photo=photo_data.get("photo"),
             server=photo_data.get("server"),
