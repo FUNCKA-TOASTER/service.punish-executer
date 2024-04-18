@@ -124,13 +124,13 @@ class PunishmentHandler(ABCHandler):
         """
         db.execute.raw(schema="toaster", query=query)
 
-    async def _get_warn_banner_url(self, event, warns):
+    async def _get_warn_banner_attachment(self, event, warns) -> str:
         upload_url = self.api.photos.getMessagesUploadServer(
             peer_id=event.get("peer_id"),
         ).get("upload_url")
 
         photo_data = requests.post(
-            upload_url,
+            url=upload_url,
             files={"file": open(f"config\images\warn_banner_{warns}_10.png", "rb")},
         ).json()
 
