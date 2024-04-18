@@ -93,7 +93,7 @@ class PunishmentHandler(ABCHandler):
             peer_id=event.get("peer_id"),
             random_id=0,
             message=text,
-            attachment=await self._get_warn_banner_url(warns),
+            attachment=await self._get_warn_banner_attachment(warns),
         )
 
     async def _get_zone_interval(self, event, zone_name) -> int:
