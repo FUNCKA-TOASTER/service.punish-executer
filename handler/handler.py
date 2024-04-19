@@ -6,9 +6,20 @@ from db import db
 from .abc import ABCHandler
 
 
-# TODO: Вынести в дальнейшем в отдельную ветку
-# Другую ветку сделать не с загрузкой картинок, а с прелоад URL из сообщества.
 class PunishmentHandler(ABCHandler):
+    banners = {
+        1: "photo219135617_457239020",
+        2: "photo219135617_457239021",
+        3: "photo219135617_457239022",
+        4: "photo219135617_457239023",
+        5: "photo219135617_457239024",
+        6: "photo219135617_457239025",
+        7: "photo219135617_457239026",
+        8: "photo219135617_457239027",
+        9: "photo219135617_457239028",
+        10: "photo219135617_457239029",
+    }
+
     async def _handle(self, event: dict, kwargs) -> bool:
         if event.get("target_message_cmid"):
             await self._delete_msg(event)
@@ -96,7 +107,7 @@ class PunishmentHandler(ABCHandler):
         return 0
 
     async def _send_direct_alert(self, event, text, warns) -> None:
-        photo = await self._get_warn_banner_attachment(event, warns)
+        photo = self.banners[warns]
         keyboard = (
             Keyboard(inline=True, one_time=False, owner_id=event.get("target_id"))
             .add_row()
@@ -140,26 +151,6 @@ class PunishmentHandler(ABCHandler):
             expire = NOW() + INTERVAL {interval} DAY;
         """
         db.execute.raw(schema="toaster", query=query)
-
-    async def _get_warn_banner_attachment(self, event, warns) -> str:
-        upload_url = self.api.photos.getMessagesUploadServer().get("upload_url")
-
-        photo_data = requests.post(
-            url=upload_url,
-            files={
-                "file": open(
-                    f"/service/handler/images/warn_banner_{warns}_10.png", "rb"
-                )
-            },
-        ).json()
-
-        save_photo = self.api.photos.saveMessagesPhoto(
-            photo=photo_data.get("photo"),
-            server=photo_data.get("server"),
-            hash=photo_data.get("hash"),
-        )[0]
-
-        return f"photo{save_photo.get('owner_id')}_{save_photo.get('id')}"
 
 
 punishment_executer = PunishmentHandler()
