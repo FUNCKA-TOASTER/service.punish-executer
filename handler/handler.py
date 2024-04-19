@@ -1,4 +1,3 @@
-import requests
 from vk_api import VkApiError
 from logger import logger
 from tools.keyboards import Keyboard, Callback, ButtonColor
