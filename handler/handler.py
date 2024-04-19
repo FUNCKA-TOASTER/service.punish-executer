@@ -105,7 +105,7 @@ class PunishmentHandler(ABCHandler):
             random_id=0,
             message=text,
             attachment=photo,
-            keyboard=keyboard,
+            keyboard=keyboard.json,
         )
 
     async def _get_zone_interval(self, event, zone_name) -> int:
