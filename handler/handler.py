@@ -10,7 +10,8 @@ from .abc import ABCHandler
 # Другую ветку сделать не с загрузкой картинок, а с прелоад URL из сообщества.
 class PunishmentHandler(ABCHandler):
     async def _handle(self, event: dict, kwargs) -> bool:
-        await self._delete_msg(event)
+        if event.get("target_message_cmid"):
+            await self._delete_msg(event)
 
         log_text = f"{event.get('author_name')}|id{event.get('author_id')}, punished {event.get('target_name')}|id{event.get('target_id')}. "
         setting = event.get("setting")
@@ -73,7 +74,9 @@ class PunishmentHandler(ABCHandler):
     async def _delete_msg(self, event) -> None:
         try:
             self.api.messages.delete(
-                delete_for_all=1, peer_id=event.get("peer_id"), cmids=event.get("cmid")
+                delete_for_all=1,
+                peer_id=event.get("peer_id"),
+                cmids=event.get("target_message_cmid"),
             )
         except VkApiError:
             ...
