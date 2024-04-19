@@ -6,6 +6,8 @@ from db import db
 from .abc import ABCHandler
 
 
+# TODO: Вынести в дальнейшем в отдельную ветку
+# Другую ветку сделать не с загрузкой картинок, а с прелоад URL из сообщества.
 class PunishmentHandler(ABCHandler):
     async def _handle(self, event: dict, kwargs) -> bool:
         await self._delete_msg(event)
@@ -93,7 +95,7 @@ class PunishmentHandler(ABCHandler):
     async def _send_direct_alert(self, event, text, warns) -> None:
         photo = await self._get_warn_banner_attachment(event, warns)
         keyboard = (
-            Keyboard(inline=True, one_time=False, owner_id=event.get("user_id"))
+            Keyboard(inline=True, one_time=False, owner_id=event.get("target_id"))
             .add_row()
             .add_button(
                 Callback(label="Скрыть", payload={"call_action": "cancel_command"}),
