@@ -1,6 +1,7 @@
 import requests
 from vk_api import VkApiError
 from logger import logger
+from tools.keyboards import Keyboard, Callback, ButtonColor
 from db import db
 from .abc import ABCHandler
 
@@ -91,12 +92,20 @@ class PunishmentHandler(ABCHandler):
 
     async def _send_direct_alert(self, event, text, warns) -> None:
         photo = await self._get_warn_banner_attachment(event, warns)
-
+        keyboard = (
+            Keyboard(inline=True, one_time=False, owner_id=event.get("user_id"))
+            .add_row()
+            .add_button(
+                Callback(label="Скрыть", payload={"call_action": "cancel_command"}),
+                ButtonColor.PRIMARY,
+            )
+        )
         self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
             message=text,
             attachment=photo,
+            keyboard=keyboard,
         )
 
     async def _get_zone_interval(self, event, zone_name) -> int:
