@@ -10,7 +10,7 @@ class PunishmentHandler(ABCHandler):
     async def _handle(self, event: dict, kwargs) -> bool:
         await self._delete_msg(event)
 
-        log_text = f"{event.get('author_name')}|id{event.get('author_id')}, punished {event.get('target_name')}|id{event.get('target_id')}."
+        log_text = f"{event.get('author_name')}|id{event.get('author_id')}, punished {event.get('target_name')}|id{event.get('target_id')}. "
         setting = event.get("setting")
 
         if setting:
@@ -21,13 +21,13 @@ class PunishmentHandler(ABCHandler):
             warns = event.get("warn_count")
 
         if warns == 0:
-            log_text += "Punishment: message deleted."
+            log_text += "Punishment: message deleted. "
             await logger.info(log_text)
             return True
 
         current_warns = await self._get_current_warns(event)
         user_tag = await self._tag(event.get("target_name"), event.get("target_id"))
-        message = f"{user_tag}, {event.get('reason_message')}\n Получено предупреждений: {warns}"
+        message = f"⚠️ {user_tag}, {event.get('reason_message')}\n Получено предупреждений: {warns}"
         sum_warns = current_warns + warns if current_warns + warns <= 10 else 10
         await self._send_direct_alert(event, message, sum_warns)
 
@@ -43,10 +43,10 @@ class PunishmentHandler(ABCHandler):
 
         await self._update_warn_points(event, days_interval, sum_warns)
         if sum_warns == 10:
-            log_text += "Punishment: kick."
+            log_text += "Punishment: kick. "
             # TODO: Kick user
         else:
-            log_text += "Punishment: add warns."
+            log_text += "Punishment: add warns. "
 
         await logger.info(log_text)
         return True
