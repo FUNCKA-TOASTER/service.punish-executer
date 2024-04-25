@@ -7,6 +7,7 @@ from .abc import ABCHandler
 
 class PunishmentHandler(ABCHandler):
     banners = {
+        0: "photo-219135617_457239019",
         1: "photo-219135617_457239020",
         2: "photo-219135617_457239021",
         3: "photo-219135617_457239022",
@@ -39,16 +40,24 @@ class PunishmentHandler(ABCHandler):
             return True
 
         current_warns = await self._get_current_warns(event)
+        if warns < 0 and current_warns == 0:
+            return False
+
         user_tag = await self._tag(event.get("target_name"), event.get("target_id"))
+
         if warns < 0:
-            message = f"⚠️ {user_tag}, вы амнистированны. \n Снято предупреждений: {abs(warns)}"
+            message = (
+                f"⚠️ {user_tag}, вы амнистированы. \n Снято предупреждений: {abs(warns)}"
+            )
         else:
             message = f"⚠️ {user_tag}, {event.get('reason_message')}\n Получено предупреждений: {warns}"
+
         sum_warns = current_warns + warns
         if sum_warns >= 10:
             sum_warns = 10
         elif sum_warns <= 0:
             sum_warns = 0
+
         await self._send_direct_alert(event, message, sum_warns)
 
         days_interval = 0
