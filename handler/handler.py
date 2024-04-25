@@ -40,7 +40,10 @@ class PunishmentHandler(ABCHandler):
 
         current_warns = await self._get_current_warns(event)
         user_tag = await self._tag(event.get("target_name"), event.get("target_id"))
-        message = f"⚠️ {user_tag}, {event.get('reason_message')}\n Получено предупреждений: {warns}"
+        if warns < 0:
+            message = f"⚠️ {user_tag}, вы амнистированны. \n Снято предупреждений: {abs(warns)}"
+        else:
+            message = f"⚠️ {user_tag}, {event.get('reason_message')}\n Получено предупреждений: {warns}"
         sum_warns = current_warns + warns
         if sum_warns >= 10:
             sum_warns = 10
