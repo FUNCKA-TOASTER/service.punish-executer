@@ -134,13 +134,16 @@ class PunishmentHandler(ABCHandler):
                 ButtonColor.PRIMARY,
             )
         )
-        self.api.messages.send(
+
+        cmid = self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
             message=text,
             attachment=photo,
             keyboard=keyboard.json,
         )
+
+        await self._initiate_session(event.get("peer_id"), cmid)
 
     async def _get_zone_interval(self, event, zone_name) -> int:
         interval = db.execute.select(
@@ -167,6 +170,32 @@ class PunishmentHandler(ABCHandler):
         ON DUPLICATE KEY UPDATE
             points = '{points}',
             expire = NOW() + INTERVAL {interval} DAY;
+        """
+        db.execute.raw(schema="toaster", query=query)
+
+    async def _initiate_session(self, conv_id: int, message_id: int) -> None:
+        cmid = self.api.messages.getById(message_ids=message_id)["items"][0][
+            "conversation_message_id"
+        ]
+        cmid = int(cmid)
+        interval = db.execute.select(
+            schema="toaster_settings",
+            table="delay",
+            fields=("delay",),
+            conv_id=conv_id,
+            setting_name="menu_session",
+        )
+
+        interval = int(interval[0][0]) if interval else 0
+        query = f"""
+        INSERT INTO 
+            menu_sessions(conv_id, cm_id, expired)
+        VALUES 
+	        (
+                '{conv_id}',
+                '{cmid}',
+                NOW() + INTERVAL {interval} MINUTE
+            );
         """
         db.execute.raw(schema="toaster", query=query)
 
