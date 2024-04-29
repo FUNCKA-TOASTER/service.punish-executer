@@ -22,8 +22,6 @@ class PunishmentHandler(ABCHandler):
     }
 
     async def _handle(self, event: dict, kwargs) -> bool:
-        context = event.get("context")
-
         if event.get("target_message_cmid"):
             await self._delete_msg(event)
 
@@ -80,22 +78,10 @@ class PunishmentHandler(ABCHandler):
         else:
             if warns > 0:
                 log_text += "Punishment: add warns. "
-                await producer.warn_alert(
-                    context,
-                    event.get("target_id"),
-                    event.get("target_name"),
-                    warns,
-                    sum_warns,
-                )
+                await producer.warn_alert(warns, sum_warns)
             else:
                 log_text += "Punishment: sub warns. "
-                await producer.unwarn_alert(
-                    context,
-                    event.get("target_id"),
-                    event.get("target_name"),
-                    warns,
-                    sum_warns,
-                )
+                await producer.unwarn_alert(abs(warns), sum_warns)
 
         await logger.info(log_text)
         return True

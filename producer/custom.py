@@ -12,14 +12,14 @@ class CustomProducer(Producer):
 
     event_queues = {"alert": "alerts"}
 
-    async def warn_alert(self, event, target_id, target_name, warns, total):
+    async def warn_alert(self, event, warns, total):
         queue = self.event_queues["alert"]
         data = {
             "alert_type": "warn",
-            "user_id": target_id,
-            "user_name": target_name,
-            "moderator_name": event.get("user_id"),
-            "moderator_id": event.get("user_name"),
+            "user_id": event.get("target_id"),
+            "user_name": event.get("target_name"),
+            "moderator_name": event.get("author_id"),
+            "moderator_id": event.get("author_name"),
             "peer_name": event.get("peer_name"),
             "peer_id": event.get("peer_id"),
             "warns": warns,
@@ -27,14 +27,14 @@ class CustomProducer(Producer):
         }
         await self._send_data(data, queue)
 
-    async def unwarn_alert(self, event, target_id, target_name, warns, total):
+    async def unwarn_alert(self, event, warns, total):
         queue = self.event_queues["alert"]
         data = {
             "alert_type": "unwarn",
-            "user_id": target_id,
-            "user_name": target_name,
-            "moderator_name": event.get("user_id"),
-            "moderator_id": event.get("user_name"),
+            "user_id": event.get("target_id"),
+            "user_name": event.get("target_name"),
+            "moderator_name": event.get("author_id"),
+            "moderator_id": event.get("author_name"),
             "peer_name": event.get("peer_name"),
             "peer_id": event.get("peer_id"),
             "warns": warns,
