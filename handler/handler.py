@@ -78,10 +78,10 @@ class PunishmentHandler(ABCHandler):
         else:
             if warns > 0:
                 log_text += "Punishment: add warns. "
-                await producer.warn_alert(warns, sum_warns)
+                await producer.warn_alert(event, warns, sum_warns)
             else:
                 log_text += "Punishment: sub warns. "
-                await producer.unwarn_alert(abs(warns), sum_warns)
+                await producer.unwarn_alert(event, abs(warns), sum_warns)
 
         await logger.info(log_text)
         return True
