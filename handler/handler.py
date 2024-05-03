@@ -74,7 +74,10 @@ class PunishmentHandler(ABCHandler):
         await self._update_warn_points(event, days_interval, sum_warns)
         if sum_warns == 10:
             log_text += "Punishment: kick. "
-            # TODO: Kick user
+            self.api.messages.removeChatUser(
+                chat_id=str(int(event.get("peer_id")) - 2000000000),
+                user_id=event.get("target_id"),
+            )
         else:
             if warns > 0:
                 log_text += "Punishment: add warns. "
