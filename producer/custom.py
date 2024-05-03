@@ -42,5 +42,18 @@ class CustomProducer(Producer):
         }
         await self._send_data(data, queue)
 
+    async def kick_alert(self, event):
+        queue = self.event_queues["alert"]
+        data = {
+            "alert_type": "command",
+            "user_id": event.get("target_id"),
+            "user_name": event.get("target_name"),
+            "peer_name": event.get("peer_name"),
+            "peer_id": event.get("peer_id"),
+            "moderator_name": event.get("author_name"),
+            "moderator_id": event.get("author_id"),
+        }
+        await self._send_data(data, queue)
+
 
 producer = CustomProducer()
