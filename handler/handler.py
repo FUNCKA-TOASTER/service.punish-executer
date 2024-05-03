@@ -78,6 +78,8 @@ class PunishmentHandler(ABCHandler):
                 chat_id=str(int(event.get("peer_id")) - 2000000000),
                 user_id=event.get("target_id"),
             )
+            await producer.warn_alert(event, warns, sum_warns)
+            await producer.kick_alert(event)
         else:
             if warns > 0:
                 log_text += "Punishment: add warns. "
