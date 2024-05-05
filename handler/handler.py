@@ -144,7 +144,7 @@ class PunishmentHandler(ABCHandler):
         )
 
         send_info = self.api.messages.send(
-            peer_id=event.get("peer_id"),
+            peer_ids=event.get("peer_id"),
             random_id=0,
             message=text,
             attachment=photo,
