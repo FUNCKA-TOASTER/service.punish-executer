@@ -151,7 +151,7 @@ class PunishmentHandler(ABCHandler):
             keyboard=keyboard.json,
         )
         peer_id, cmid = send_info[0]["peer_id"], send_info[0]["conversation_message_id"]
-        await self.initiate_session(peer_id, cmid)
+        await self._initiate_session(peer_id, cmid)
 
     async def _get_zone_interval(self, event, zone_name) -> int:
         interval = db.execute.select(
