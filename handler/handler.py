@@ -143,15 +143,15 @@ class PunishmentHandler(ABCHandler):
             )
         )
 
-        cmid = self.api.messages.send(
+        send_info = self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
             message=text,
             attachment=photo,
             keyboard=keyboard.json,
         )
-
-        await self._initiate_session(event.get("peer_id"), cmid)
+        peer_id, cmid = send_info[0]["peer_id"], send_info[0]["conversation_message_id"]
+        await self.initiate_session(peer_id, cmid)
 
     async def _get_zone_interval(self, event, zone_name) -> int:
         interval = db.execute.select(
@@ -181,11 +181,7 @@ class PunishmentHandler(ABCHandler):
         """
         db.execute.raw(schema="toaster", query=query)
 
-    async def _initiate_session(self, conv_id: int, message_id: int) -> None:
-        cmid = self.api.messages.getById(message_ids=message_id)["items"][0][
-            "conversation_message_id"
-        ]
-        cmid = int(cmid)
+    async def _initiate_session(self, conv_id: int, cmid: int) -> None:
         interval = db.execute.select(
             schema="toaster_settings",
             table="delay",
