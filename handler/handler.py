@@ -61,7 +61,9 @@ class PunishmentHandler(ABCHandler):
 
         await self._send_direct_alert(event, message, sum_warns)
 
-        if sum_warns <= 3:
+        if sum_warns == 0:
+            days_interval = 0
+        elif sum_warns <= 3:
             days_interval = await self._get_zone_interval(event, "green_zone")
 
         elif sum_warns <= 6:
@@ -71,8 +73,7 @@ class PunishmentHandler(ABCHandler):
             days_interval = await self._get_zone_interval(event, "red_zone")
 
         await self._update_warn_points(event, days_interval, sum_warns)
-        if sum_warns == 10 or sum_warns == 0:
-            days_interval = 0
+        if sum_warns == 10:
             log_text += "Punishment: kick. "
             self.api.messages.removeChatUser(
                 chat_id=str(int(event.get("peer_id")) - 2000000000),
