@@ -41,10 +41,13 @@ class PunishmentHandler:
                     comment = f"Выданы предупреждения: {event.points} ({summary}/10)"
                     if summary == 10:
                         comment = "Исключён. | " + comment
+
+                    self._alert_user(event, summary)
                 else:
                     return
 
                 self._alert_about_execution(comment, event)
+                logger.info("Punishment executed.")
 
         except Exception as error:
             logger.error(error)
@@ -81,32 +84,6 @@ class PunishmentHandler:
                 points=new_warns,
             )
 
-            keyboard = (
-                Keyboard(inline=True, one_time=False, owner_id=event.uuid)
-                .add_row()
-                .add_button(
-                    Callback(label="Закрыть", payload={"action_name": "close_menu"}),
-                    ButtonColor.PRIMARY,
-                )
-            )
-
-            text = f"[id{event.uuid}|Пользователь] | {event.comment} | Предупреждения: {event.points} ({new_warns}/10)"
-            api = self._get_api()
-
-            send_info = api.messages.send(
-                peer_ids=event.bpid,
-                random_id=0,
-                message=text,
-                keyboard=keyboard.json,
-            )
-            cmid = send_info[0]["conversation_message_id"]
-
-            open_menu_session(
-                db_instance=TOASTER_DB,
-                bpid=event.peer.bpid,
-                cmid=cmid,
-            )
-
             return True, new_warns
 
         return False, 0
@@ -133,7 +110,38 @@ class PunishmentHandler:
         except VkApiError as e:
             logger.info(f"Could not delete target message: {e}")
 
-    def _alert_about_execution(self, comment: str, event: Punishment):
+    def _alert_user(self, event: Punishment, points: int) -> None:
+        banner = BANNERS.get(points)
+        if not banner:
+            raise ValueError("Unable to find suitable banner.")
+
+        keyboard = (
+            Keyboard(inline=True, one_time=False, owner_id=event.uuid)
+            .add_row()
+            .add_button(
+                Callback(label="Скрыть", payload={"action_name": "close_menu"}),
+                ButtonColor.PRIMARY,
+            )
+        )
+
+        text = f"[id{event.uuid}|Пользователь] | {event.comment} | Предупреждения: {event.points} ({points}/10)"
+        api = self._get_api()
+
+        send_info = api.messages.send(
+            peer_ids=event.bpid,
+            random_id=0,
+            message=text,
+            keyboard=keyboard.json,
+        )
+        cmid = send_info[0]["conversation_message_id"]
+
+        open_menu_session(
+            db_instance=TOASTER_DB,
+            bpid=event.peer.bpid,
+            cmid=cmid,
+        )
+
+    def _alert_about_execution(self, comment: str, event: Punishment) -> None:
         answer_text = f"[id{event.uuid}|Пользователь] | {comment} \n"
 
         api = self._get_api()
