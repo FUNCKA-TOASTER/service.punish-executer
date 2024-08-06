@@ -44,6 +44,7 @@ class PunishmentHandler:
 
                     self._alert_user(event, summary)
                 else:
+                    logger.info("Messages deleted.")
                     return
 
                 self._alert_about_execution(comment, event)
