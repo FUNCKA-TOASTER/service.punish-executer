@@ -2,7 +2,7 @@ from typing import Any, Tuple
 from vk_api import VkApiError, VkApi
 from loguru import logger
 from toaster.keyboards import Keyboard, Callback, ButtonColor
-from toaster.broker.event import Punishment
+from toaster.broker.events import Punishment
 from toaster_utils.scripts import (
     get_log_peers,
     get_user_warns,
