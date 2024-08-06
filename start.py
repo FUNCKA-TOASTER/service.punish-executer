@@ -1,29 +1,43 @@
-"""Service "toaster.comman-handling-service".
-About:
-    ...
+"""Service "service.punishment-executer".
 
-Author:
-    Oidaho (Ruslan Bashinskii)
-    oidahomain@gmail.com
+File:
+    start.py
+
+About:
+    This service is responsible for receiving custom
+    events from the Redis channel "punishment".
 """
 
-import asyncio
-from consumer import consumer
-from handler import punishment_executer
-from logger import logger
+import sys
+from loguru import logger
+from toaster.broker import (
+    Subscriber,
+    build_connection,
+)
+from handler import PunishmentHandler
+import config
 
 
-async def main():
-    """Entry point."""
-    log_text = "Awaiting for the command to execute punishment..."
-    await logger.info(log_text)
+def setup_logger() -> None:
+    logger.remove()
+    logger.add(
+        sys.stdout,
+        colorize=True,
+        format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <red>{module}</red> | <level>{level}</level> | {message}",
+        level="DEBUG",
+    )
 
-    for data in consumer.listen_queue("warns"):
-        log_text = f"Recived new event: {data}"
-        await logger.info(log_text)
 
-        await punishment_executer(data)
+def main():
+    """Program entry point."""
+
+    setup_logger()
+    subscriber = Subscriber(client=build_connection(config.REDIS_CREDS))
+    handler = PunishmentHandler()
+
+    for event in subscriber.listen(channel_name=config.CHANNEL_NAME):
+        handler(event)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

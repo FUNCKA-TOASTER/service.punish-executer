@@ -1,29 +1,29 @@
 """Module "config".
+
+File:
+    __init__.py
+
 About:
-    Service configurations and settings.
+    Initializing the "config" module.
 """
 
 from .config import (
-    QUEUE_BROKER_IP,
+    REDIS_CREDS,
+    CHANNEL_NAME,
     TOKEN,
     GROUP_ID,
-    SERVICE_NAME,
     API_VERSION,
-    MY_SQL_HOST,
-    MY_SQL_PORT,
-    MY_SQL_PSWD,
-    MY_SQL_USER,
+    ALCHEMY_SETUP,
+    DBMS_CREDS,
 )
 
 
 __all__ = (
-    "QUEUE_BROKER_IP",
-    "TOKEN",
-    "GROUP_ID",
-    "SERVICE_NAME",
-    "API_VERSION",
-    "MY_SQL_HOST",
-    "MY_SQL_PORT",
-    "MY_SQL_PSWD",
-    "MY_SQL_USER",
+    "REDIS_CREDS",  # Redis (broker) credentials
+    "CHANNEL_NAME",  # Broker subscription channel name
+    "TOKEN",  # API token
+    "GROUP_ID",  # ID of the group
+    "API_VERSION",  # API Version use
+    "ALCHEMY_SETUP",  # Setup for sqlalchemy. Driver, Database and DBMS.
+    "DBMS_CREDS",  # DBMS credentials includes host, port, user, password.
 )
