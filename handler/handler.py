@@ -1,4 +1,4 @@
-from Typing import Any, Tuple
+from typing import Any, Tuple
 from vk_api import VkApiError, VkApi
 from loguru import logger
 from toaster.keyboards import Keyboard, Callback, ButtonColor
