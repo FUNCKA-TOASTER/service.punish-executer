@@ -1,0 +1,25 @@
+[tool.poetry]
+package-mode = false
+name = "service.punishment-executer"
+version = "0.2.0"
+description = "TOASTER bot service."
+repository = "https://github.com/STALCRAFT-FUNCKA/service.punishment-executer"
+documentation = "https://github.com/STALCRAFT-FUNCKA/TOASTER/wiki"
+authors = [
+    "Oidaho <oidahomain@gmail.com>"
+]
+license = "GPL-3.0-only"
+readme = "README.md"
+packages = []
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+vk-api = "^11.9.9"
+toaster = {git = "https://github.com/FUNCKA-TOASTER/package.toaster", branch="main"}
+toaster_utils = {git = "https://github.com/FUNCKA-TOASTER/package.toaster-utils", branch="main"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
