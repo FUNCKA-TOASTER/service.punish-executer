@@ -138,7 +138,7 @@ class PunishmentHandler:
 
         open_menu_session(
             db_instance=TOASTER_DB,
-            bpid=event.peer.bpid,
+            bpid=event.bpid,
             cmid=cmid,
         )
 
