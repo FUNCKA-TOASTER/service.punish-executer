@@ -12,4 +12,4 @@ from config import ALCHEMY_SETUP, DBMS_CREDS
 
 
 # Database instance
-TOASTER_DB = Database(build_connection_uri(ALCHEMY_SETUP, DBMS_CREDS), debug=True)
+TOASTER_DB = Database(build_connection_uri(ALCHEMY_SETUP, DBMS_CREDS), debug=False)
