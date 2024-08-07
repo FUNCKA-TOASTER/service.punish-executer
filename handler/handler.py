@@ -125,13 +125,18 @@ class PunishmentHandler:
             )
         )
 
-        text = f"[id{event.uuid}|Пользователь] | {event.comment} | Предупреждения: {event.points} ({points}/10)"
+        text = (
+            f"[id{event.uuid}|Пользователь]\n"
+            f" {event.comment} \n"
+            f"Кол-во: {event.points}"
+        )
         api = self._get_api()
 
         send_info = api.messages.send(
             peer_ids=event.bpid,
             random_id=0,
             message=text,
+            attachments=banner,
             keyboard=keyboard.json,
         )
         cmid = send_info[0]["conversation_message_id"]
