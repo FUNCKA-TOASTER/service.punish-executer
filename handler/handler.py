@@ -146,7 +146,7 @@ class PunishmentHandler:
             peer_ids=event.bpid,
             random_id=0,
             message=text,
-            attachments=banner,
+            attachment=banner,
             keyboard=keyboard.json,
         )
         cmid = send_info[0]["conversation_message_id"]
