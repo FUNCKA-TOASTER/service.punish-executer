@@ -8,6 +8,7 @@ from toaster_utils.scripts import (
     get_user_warns,
     open_menu_session,
     set_user_warns,
+    get_chat_peers,
 )
 from db import TOASTER_DB
 import config
@@ -104,8 +105,7 @@ class PunishmentHandler:
         if mode == "local":
             cids = [event.bpid - 2000000000]
         elif mode == "global":
-            # TODO: Получить все чаты с меткой CHAT
-            cids = []
+            cids = get_chat_peers(db_instance=TOASTER_DB)
         else:
             raise ValueError(f"Unknown kick mode '{mode}'.")
 
