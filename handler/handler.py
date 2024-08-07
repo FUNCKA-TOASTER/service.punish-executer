@@ -1,4 +1,4 @@
-from typing import Any, Tuple
+from typing import Any, Tuple, NoReturn, Optional
 from vk_api import VkApiError, VkApi
 from loguru import logger
 from toaster.keyboards import Keyboard, Callback, ButtonColor
@@ -89,15 +89,25 @@ class PunishmentHandler:
 
         return False, 0
 
-    def _kick_user(self, event: Punishment) -> None:
-        try:
-            api = self._get_api()
-            api.messages.removeChatUser(
-                chat_id=event.bpid - 2000000000,
-                user_id=event.uuid,
-            )
-        except VkApiError as e:
-            logger.info(f"Could not kick target user: {e}")
+    def _kick_user(self, event: Punishment, mode: str = "local") -> Optional[NoReturn]:
+        api = self._get_api()
+
+        if mode == "local":
+            cids = [event.bpid - 2000000000]
+        elif mode == "global":
+            # TODO: Получить все чаты с меткой CHAT
+            cids = []
+        else:
+            raise ValueError(f"Unknown kick mode '{mode}'.")
+
+        for chat_id in cids:
+            try:
+                api.messages.removeChatUser(
+                    chat_id=chat_id,
+                    user_id=event.uuid,
+                )
+            except VkApiError as e:
+                logger.info(f"Could not kick target user: {e}")
 
     def _delete_target_message(self, event: Punishment) -> None:
         try:
