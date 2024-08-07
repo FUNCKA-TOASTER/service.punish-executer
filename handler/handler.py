@@ -110,9 +110,10 @@ class PunishmentHandler:
                 logger.info(f"Could not kick target user: {e}")
 
     def _delete_target_message(self, event: Punishment) -> None:
-        if not event.cmids:
-            raise ValueError("Message deletion cancelled. No target messages.")
         try:
+            if not event.cmids:
+                raise ValueError("Message deletion cancelled. No target messages.")
+
             api = self._get_api()
             api.messages.delete(
                 delete_for_all=1,
@@ -120,7 +121,7 @@ class PunishmentHandler:
                 cmids=event.cmids,
             )
 
-        except VkApiError as e:
+        except (VkApiError, ValueError) as e:
             logger.info(f"Could not delete target message: {e}")
 
     def _alert_user(self, event: Punishment, points: int) -> None:
