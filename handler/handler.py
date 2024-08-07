@@ -37,8 +37,14 @@ class PunishmentHandler:
             if result:
                 if event.punishment_type == "kick":
                     comment = "Исключён."
-                elif event.punishment_type == "warn":
-                    comment = f"Выданы предупреждения: {event.points} ({summary}/10)"
+                elif event.punishment_type in ("warn", "unwarn"):
+                    if event.punishment_type == "warn":
+                        comment = "Выданы "
+                    else:
+                        comment = "Сняты "
+
+                    comment += f"предупреждения: {abs(event.points)} ({summary}/10)"
+
                     if summary == 10:
                         comment = "Исключён. | " + comment
 
@@ -64,7 +70,7 @@ class PunishmentHandler:
             self._kick_user(event)
             return True, 10
 
-        if event.punishment_type == "warn":
+        if event.punishment_type in ("warn", "unwarn"):
             warns_info = get_user_warns(
                 db_instance=TOASTER_DB,
                 uuid=event.uuid,
