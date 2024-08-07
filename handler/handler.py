@@ -80,6 +80,8 @@ class PunishmentHandler:
             if warns_info:
                 current_warns, _ = warns_info
             else:
+                if event.punishment_type == "unwarn":
+                    return False, 0
                 current_warns = 0
 
             new_warns = max(0, min(current_warns + event.points, 10))
