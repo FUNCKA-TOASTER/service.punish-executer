@@ -93,6 +93,9 @@ class PunishmentHandler:
                 points=new_warns,
             )
 
+            if new_warns == 10:
+                self._kick_user(event)
+
             return True, new_warns
 
         return False, 0
