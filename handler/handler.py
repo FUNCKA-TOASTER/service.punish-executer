@@ -150,7 +150,7 @@ class PunishmentHandler:
         text = (
             f"[id{event.uuid}|Пользователь]\n"
             f" {event.comment} \n"
-            f"Кол-во: {event.points}"
+            f"Кол-во: {abs(event.points)}"
         )
         api = self._get_api()
 
