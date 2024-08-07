@@ -110,6 +110,8 @@ class PunishmentHandler:
                 logger.info(f"Could not kick target user: {e}")
 
     def _delete_target_message(self, event: Punishment) -> None:
+        if not event.cmids:
+            raise ValueError("Message deletion cancelled. No target messages.")
         try:
             api = self._get_api()
             api.messages.delete(
