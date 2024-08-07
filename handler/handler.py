@@ -45,10 +45,11 @@ class PunishmentHandler:
 
                     comment += f"предупреждения: {abs(event.points)} ({summary}/10)"
 
+                    self._alert_user(event, summary)
                     if summary == 10:
                         comment = "Исключён. | " + comment
+                        self._kick_user(event)
 
-                    self._alert_user(event, summary)
                 else:
                     logger.info("Messages deleted.")
                     return
@@ -92,9 +93,6 @@ class PunishmentHandler:
                 uuid=event.uuid,
                 points=new_warns,
             )
-
-            if new_warns == 10:
-                self._kick_user(event)
 
             return True, new_warns
 
