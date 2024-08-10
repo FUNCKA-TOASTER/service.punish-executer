@@ -1,36 +1,35 @@
-# ⚙️ TOASTER.PUNISH-EXECUTION-SERVICE
+# ⚙️ SERVICE.PUNISHMENT-EXECUTER
 
-![main_img](https://github.com/STALCRAFT-FUNCKA/toaster.message-handling-service/assets/76991612/8bb6b3bf-8385-4d4b-80cc-e104d5283a9c)
+![main_img](https://github.com/FUNCKA-TOASTER/service.punishment-executer/assets/76991612/8bb6b3bf-8385-4d4b-80cc-e104d5283a9c)
 
 ## 📄 Информация
-**TOASTER.PUNISH-EXECUTION-SERVICE** - сервис обработки событий, классифицированных как "запрос на предупреждение". Событие приходит от сервиса обработки команд или сервиса обработки сообщений. Праллельно производятся необходимые действия внутреннего\внешнего логирования.
 
-_Главная ветка использует загрузку сообщений из ранее размещенного альбома VK. Существует побочная ветка, в которой загрузка происходит каждый раз, когда выдается предупреждение. Рекомендуется загрузить баннеры к себе в сообщество и использовать их как уже загруженные фото._
+**SERVICE.PUNISHMENT-EXECUTER** - сервис обработки событий, классифицированных как "warn", "unwarn", "kick", "delete".
 
-### Входные данные:
+### Входные данные
+
 Warn Event:
-```
-{
-  "author_id": 1111,
-  "author_name": "SampleName",
-  "reason_message": "text",
-  "setting": "SampleName",
-  "target_id": 1111,
-  "target_name": "SampleName",
-  "peer_id": 1111,
-  "peer_name": "SampleName",
-  "cmid": 1111,
-  "warn_count": 5,
-  "target_message_cmid": 1111,
-}
-```
-Пример события, которое приходит от toaster.command-handling-service или toaster.message-handling-service сервера на toaster.punish-execution-service.
 
-Далее, сервиc выносит предупреждения, манипулируя с данными в БД, и отправляет запрос на уведомление в лог-чаты.
+```python
+class Punishment:
+    punishment_type: str
+    comment: str
+    cmids: Union[int, List[int]]
+    bpid: int
+    uuid: int
+    points: Optional[int]
+    mode: Optional[str]
+```
+
+Пример события, которое приходит на service.punishment-executer.
+
+Далее, в зависимости от типа санкций, сервис выполняет действия предупреждения, кика или удаления сообщений.
 
 ### Дополнительно
+
 Docker stup:
-```
+
+```shell
 docker network
     name: TOASTER
     ip_gateway: 172.18.0.1
@@ -39,7 +38,7 @@ docker network
 
 
 docker image
-    name: toaster.punish-execution-service
+    name: service.punishment-executer
     args:
         TOKEN: "..."
         GROUPID: "..."
@@ -50,17 +49,15 @@ docker image
 
 
 docker container
-    name: toaster.punish-execution-service
+    name: service.punishment-executer
     network_ip: 172.1.08.9
-
-docker volumes:
-    /var/log/TOASTER/toaster.punish-execution-service:/service/logs
 ```
 
 Jenkins shell command:
-```
-imageName="toaster.punish-execution-service"
-containerName="toaster.punish-execution-service"
+
+```shell
+imageName="service.punishment-executer"
+containerName="service.punishment-executer"
 localIP="172.18.0.9"
 networkName="TOASTER"
 
@@ -82,7 +79,6 @@ docker build . -t $imageName \
 #run container
 docker run -d \
 --name $containerName \
---volume /var/log/TOASTER/$imageName:/service/logs \
 --restart always \
 $imageName
 
