@@ -7,20 +7,20 @@ LABEL author="Oidaho" email="oidahomain@gmail.com"
 # Set build arguments
 ARG TOKEN
 ARG GROUPID
-
-# Set environment variables
-ENV TOKEN $TOKEN
-ENV GROUPID $GROUPID
-
 ARG SQL_HOST
 ARG SQL_PORT
 ARG SQL_USER
 ARG SQL_PSWD
+ARG DATABASE
 
+# Set environment variables
+ENV TOKEN $TOKEN
+ENV GROUPID $GROUPID
 ENV SQL_HOST $SQL_HOST
 ENV SQL_PORT $SQL_PORT
 ENV SQL_USER $SQL_USER
 ENV SQL_PSWD $SQL_PSWD
+ENV DATABASE $DATABASE
 
 # Set working directory
 WORKDIR /service
