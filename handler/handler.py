@@ -1,3 +1,4 @@
+import time  # Для костыля
 from typing import Any, Tuple, NoReturn, Optional
 from vk_api import VkApiError, VkApi
 from loguru import logger
@@ -66,10 +67,16 @@ class PunishmentHandler:
 
     def _execute(self, event: Punishment) -> ExecResult:
         if event.punishment_type == "delete":
+            # TODO: Этот костыль нужен, чтобы алерт об отработке команды успел переслать сообщения
+            # Нуждается в фиксе
+            time.sleep(0.2)
             return True, 0
 
         if event.punishment_type == "kick":
             self._kick_user(event)
+            # TODO: То же самое
+            # Нуждается в фиксе
+            time.sleep(0.2)
             return True, 10
 
         if event.punishment_type in ("warn", "unwarn"):
