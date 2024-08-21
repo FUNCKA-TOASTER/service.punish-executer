@@ -16,8 +16,8 @@ packages = []
 [tool.poetry.dependencies]
 python = "^3.10"
 vk-api = "^11.9.9"
-toaster = {git = "https://github.com/FUNCKA-TOASTER/package.toaster", branch="main"}
-toaster_utils = {git = "https://github.com/FUNCKA-TOASTER/package.toaster-utils", branch="main"}
+funcka_bots = {git = "https://github.com/FUNCKA-STALCRAFT/package.funcka-bots", branch="main"}
+toaster = {git = "https://github.com/FUNCKA-TOASTER/package.toaster-utils", branch="main"}
 
 
 [build-system]

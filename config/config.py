@@ -9,7 +9,7 @@ About:
 """
 
 import os
-from toaster.credentials import (
+from funcka_bots.credentials import (
     AlchemyCredentials,
     AlchemySetup,
     RedisCredentials,

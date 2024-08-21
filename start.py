@@ -10,7 +10,7 @@ About:
 
 import sys
 from loguru import logger
-from toaster.broker import (
+from funcka_bots.broker import (
     Subscriber,
     build_connection,
 )

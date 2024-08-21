@@ -2,9 +2,9 @@ import time  # Для костыля
 from typing import Any, Tuple, NoReturn, Optional
 from vk_api import VkApiError, VkApi
 from loguru import logger
-from toaster.keyboards import Keyboard, Callback, ButtonColor
-from toaster.broker.events import Punishment
-from toaster_utils.scripts import (
+from funcka_bots.keyboards import Keyboard, Callback, ButtonColor
+from funcka_bots.broker.events import Punishment
+from toaster.scripts import (
     get_log_peers,
     get_user_warns,
     open_menu_session,
