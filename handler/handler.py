@@ -71,17 +71,15 @@ class PunishmentHandler(ABCHandler):
             self._delete_target_message(event)
 
     def _execute(self, event: BaseEvent) -> ExecResult:
+        # TODO: Этот костыль нужен, чтобы алерт об отработке команды успел переслать сообщения
+        # Нуждается в фиксе
+        time.sleep(0.2)
+
         if event.punishment_type == "delete":
-            # TODO: Этот костыль нужен, чтобы алерт об отработке команды успел переслать сообщения
-            # Нуждается в фиксе
-            time.sleep(0.2)
             return True, 0
 
         if event.punishment_type == "kick":
             self._kick_user(event, event.kick.mode)
-            # TODO: То же самое
-            # Нуждается в фиксе
-            time.sleep(0.2)
             return True, 10
 
         if event.punishment_type in ("warn", "unwarn"):
