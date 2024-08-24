@@ -118,10 +118,10 @@ class PunishmentHandler(ABCHandler):
         api = self._get_api()
 
         if mode == "local":
-            cids = [event.bpid - 2000000000]
+            cids = [event.peer.bpid - 2000000000]
         elif mode == "global":
             cids = [
-                bpid - -2000000000 for bpid in get_chat_peers(db_instance=TOASTER_DB)
+                bpid - 2000000000 for bpid in get_chat_peers(db_instance=TOASTER_DB)
             ]
         else:
             raise ValueError(f"Unknown kick mode '{mode}'.")
