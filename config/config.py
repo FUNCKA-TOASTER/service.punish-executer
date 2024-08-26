@@ -9,42 +9,22 @@ About:
 """
 
 import os
-from funcka_bots.credentials import (
-    AlchemyCredentials,
-    AlchemySetup,
-    RedisCredentials,
+from funcka_bots.credentials import RabbitMQCredentials
+
+BROKER_CREDS = RabbitMQCredentials(
+    host=os.getenv("rabbitmq_host"),
+    port=os.getenv("rabbitmq_port"),
+    vhost=os.getenv("rabbitmq_vhost"),
+    user=os.getenv("rabbitmq_user"),
+    pswd=os.getenv("rabbitmq_pswd"),
 )
 
-# Broker subscription channel name
-CHANNEL_NAME = "punishment"
+BROKER_QUEUE_NAME = "punishment"
 
-# API token obtained from environment variable
-TOKEN: str = os.getenv("TOKEN")
+VK_GROUP_TOKEN: str = os.getenv("vk_group_token")
 
-# Group ID for identifying specific groups
-GROUP_ID: int = int(os.getenv("GROUPID"))
+VK_GROUP_ID: int = int(os.getenv("vk_group_id"))
 
-# API version used for API requests
-API_VERSION: str = "5.199"
+VK_API_VERSION: str = "5.199"
 
-# Redis (broker) credentials
-REDIS_CREDS = RedisCredentials(
-    host="172.18.0.40",
-    port=6379,
-    db=0,
-)
-
-# Setup for sqlalchemy. Driver, Database and DBMS.
-ALCHEMY_SETUP = AlchemySetup(
-    dialect="mysql",
-    driver="pymysql",
-    database=os.getenv("DATABASE"),
-)
-
-# DBMS credentials that includes host, port, user, password.
-DBMS_CREDS = AlchemyCredentials(
-    host=os.getenv("SQL_HOST"),
-    port=int(os.getenv("SQL_PORT")),
-    user=os.getenv("SQL_USER"),
-    pswd=os.getenv("SQL_PSWD"),
-)
+VK_PEER_ID_DELAY = 2000000000

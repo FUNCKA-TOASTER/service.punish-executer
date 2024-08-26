@@ -3,7 +3,7 @@ from typing import Any, Tuple, NoReturn, Optional
 from vk_api import VkApiError, VkApi
 from loguru import logger
 from funcka_bots.keyboards import Keyboard, Callback, ButtonColor
-from funcka_bots.broker.events import BaseEvent
+from funcka_bots.events import BaseEvent
 from funcka_bots.handler import ABCHandler
 from toaster.scripts import (
     get_log_peers,
@@ -12,7 +12,6 @@ from toaster.scripts import (
     set_user_warns,
     get_chat_peers,
 )
-from db import TOASTER_DB
 import config
 
 
@@ -88,11 +87,7 @@ class PunishmentHandler(ABCHandler):
             else:
                 points = event.unwarn.points
 
-            warns_info = get_user_warns(
-                db_instance=TOASTER_DB,
-                uuid=event.user.uuid,
-                bpid=event.peer.bpid,
-            )
+            warns_info = get_user_warns(uuid=event.user.uuid, bpid=event.peer.bpid)
 
             if warns_info:
                 current_warns, _ = warns_info
@@ -103,12 +98,7 @@ class PunishmentHandler(ABCHandler):
 
             new_warns = max(0, min(current_warns + points, 10))
 
-            set_user_warns(
-                db_instance=TOASTER_DB,
-                bpid=event.peer.bpid,
-                uuid=event.user.uuid,
-                points=new_warns,
-            )
+            set_user_warns(bpid=event.peer.bpid, uuid=event.user.uuid, points=new_warns)
 
             return True, new_warns
 
@@ -118,11 +108,9 @@ class PunishmentHandler(ABCHandler):
         api = self._get_api()
 
         if mode == "local":
-            cids = [event.peer.bpid - 2000000000]
+            cids = [event.peer.bpid - config.VK_PEER_ID_DELAY]
         elif mode == "global":
-            cids = [
-                bpid - 2000000000 for bpid in get_chat_peers(db_instance=TOASTER_DB)
-            ]
+            cids = [bpid - config.VK_PEER_ID_DELAY for bpid in get_chat_peers()]
         else:
             raise ValueError(f"Unknown kick mode '{mode}'.")
 
@@ -185,17 +173,13 @@ class PunishmentHandler(ABCHandler):
         )
         cmid = send_info[0]["conversation_message_id"]
 
-        open_menu_session(
-            db_instance=TOASTER_DB,
-            bpid=event.peer.bpid,
-            cmid=cmid,
-        )
+        open_menu_session(bpid=event.peer.bpid, cmid=cmid)
 
     def _alert_about_execution(self, alert_comment: str, event: BaseEvent) -> None:
         answer_text = f"[id{event.user.uuid}|Пользователь] | {alert_comment} \n"
 
         api = self._get_api()
-        for bpid in get_log_peers(db_instance=TOASTER_DB):
+        for bpid in get_log_peers():
             api.messages.send(
                 peer_ids=bpid,
                 random_id=0,
@@ -204,7 +188,7 @@ class PunishmentHandler(ABCHandler):
 
     def _get_api(self) -> Any:
         session = VkApi(
-            token=config.TOKEN,
-            api_version=config.API_VERSION,
+            token=config.VK_GROUP_TOKEN,
+            api_version=config.VK_API_VERSION,
         )
         return session.get_api()

@@ -5,22 +5,36 @@ FROM python:3.10.0
 LABEL author="Oidaho" email="oidahomain@gmail.com"
 
 # Set build arguments
-ARG TOKEN
-ARG GROUPID
-ARG SQL_HOST
-ARG SQL_PORT
-ARG SQL_USER
-ARG SQL_PSWD
-ARG DATABASE
+ARG vk_group_token
+ARG vk_group_id
+ARG sql_host
+ARG sql_port
+ARG sql_user
+ARG sql_pswd
+ARG alchemy_dialect
+ARG alchemy_driver
+ARG alchemy_database
+ARG rabbitmq_host
+ARG rabbitmq_port
+ARG rabbitmq_vhost
+ARG rabbitmq_user
+ARG rabbitmq_pswd
 
 # Set environment variables
-ENV TOKEN $TOKEN
-ENV GROUPID $GROUPID
-ENV SQL_HOST $SQL_HOST
-ENV SQL_PORT $SQL_PORT
-ENV SQL_USER $SQL_USER
-ENV SQL_PSWD $SQL_PSWD
-ENV DATABASE $DATABASE
+ENV vk_group_token $vk_group_token
+ENV vk_group_id $vk_group_id
+ENV sql_host $sql_host
+ENV sql_port $sql_port
+ENV sql_user $sql_user
+ENV sql_pswd $sql_pswd
+ENV alchemy_dialect $alchemy_dialect
+ENV alchemy_driver $alchemy_driver
+ENV alchemy_database $alchemy_database
+ENV rabbitmq_host $rabbitmq_host
+ENV rabbitmq_port $rabbitmq_port
+ENV rabbitmq_vhost $rabbitmq_vhost
+ENV rabbitmq_user $rabbitmq_user
+ENV rabbitmq_pswd $rabbitmq_pswd
 
 # Set working directory
 WORKDIR /service
