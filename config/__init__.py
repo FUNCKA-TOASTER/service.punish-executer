@@ -8,7 +8,6 @@ About:
 """
 
 from .config import (
-    BROKER_CREDS,
     BROKER_QUEUE_NAME,
     VK_GROUP_TOKEN,
     VK_GROUP_ID,
@@ -18,7 +17,6 @@ from .config import (
 
 
 __all__ = (
-    "BROKER_CREDS",
     "BROKER_QUEUE_NAME",
     "VK_GROUP_TOKEN",
     "VK_GROUP_ID",
